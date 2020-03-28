@@ -1,21 +1,29 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {addCluster} from "../../global";
+import {addCluster, carTrack} from "../../global";
 
 function VideoActions(props) {
     const {global} = props;
-    console.log(props);
-    console.log(global);
 
     function goBack() {
-        global.setState({showVideoActions: false});
         addCluster();
-        // console.log(document.getElementsByClassName('tdt-marker-icon').length);
+        global.setState({showVideoActions: false});
+        carTrack.clear();
+    }
+    function start() {
+        carTrack.start();
+    }
+    function pause() {
+        carTrack.pause();
+    }
+    function stop() {
+        carTrack.stop();
     }
     return (
         <div className={'video-actions'}>
-            <button>播放</button>
-            <button>暂停</button>
+            <button onClick={start}>播放</button>
+            <button onClick={pause}>暂停</button>
+            <button onClick={stop}>结束</button>
             <button onClick={goBack}>返回</button>
         </div>
     )

@@ -4,6 +4,7 @@ import {Provider} from 'react-redux';
 import InfoContent from "../components/InfoContent";
 import {mapInstance} from "../components/Map";
 import {store} from "../index";
+import {datas} from "../datas/point";
 
 const T = window.T;
 
@@ -57,9 +58,12 @@ export function createMarkers() {
                 value: '2020-03-28 09:46:43',
             },
         ]
-        const marker = new T.Marker(new T.LngLat(Math.random() * 40 + 85, Math.random() * 30 + 21), {title: i, name: `我是${i}`});
+        const marker = new T.Marker(new T.LngLat(Math.random() * 40 + 85, Math.random() * 30 + 21), {
+            title: i,
+            name: `我是${i}`
+        });
         const el = document.createElement('div');
-        marker.addEventListener('click',function (e) {
+        marker.addEventListener('click', function (e) {
             render(
                 <Provider store={store}>
                     <InfoContent messages={messages} map={mapInstance}/>
@@ -78,8 +82,24 @@ export function addCluster() {
 }
 
 export function clearCluster() {
-    if(cluster) {
+    if (cluster) {
         cluster.clearMarkers();
         infoWin.closeInfoWindow();
     }
+}
+
+export let carTrack = null;
+export function addCarLine() {
+     carTrack = new T.CarTrack(mapInstance, {
+        interval: 5,
+        speed: 10,
+        dynamicLine: true,
+        polylinestyle: {color: "#2C64A7", weight: 5, opacity: 0.9},
+        Datas: datas.features.map(function (obj, i) {
+            var coordinates = obj.geometry.coordinates;
+            var lnlat = new T.LngLat(coordinates[0], coordinates[1]);
+            return lnlat;
+        })
+    })
+    mapInstance.centerAndZoom(new T.LngLat(116.318090, 39.920270), 10);
 }

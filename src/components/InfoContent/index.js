@@ -1,12 +1,13 @@
 import React from "react";
 import {connect} from 'react-redux'
-import {clearCluster} from "../../global";
+import {clearCluster, addCluster, addCarLine} from "../../global";
 
 function InfoContent(props) {
     const {messages, map, global} = props;
 
     function onClick() {
         clearCluster();
+        addCarLine();
         global.setState({ showVideoActions: true })
     }
     return (
